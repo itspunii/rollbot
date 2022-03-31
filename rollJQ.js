@@ -127,19 +127,9 @@ function test() {
 }
 /*  TODO
 
-!!!!FIX GREEN GETTING CALLED AS RED WTF (maybe bad call when tabbed out?)
-
-Auto add IDs to green bet button, Bet Amount field, MAX button, 1/2 button.
-
 Add total balance check to not bet $1000 on triple green chance
 Get jackpot amount and maybe get the money added to the jackpot after a roll.
-Bet 25% of balance if red/black streak >10.
 Log initial balance on start().
 Log all bet amounts.
-
-
-
-
-
 
 */
