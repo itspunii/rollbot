@@ -75,7 +75,7 @@ function getCurrentTimer() {
 function getLastRoll() {
     if (currentBalance == 0) {
         clearInterval(timerInt);
-        getCurrentTimer = "No";
+        getCurrentTimer = null;
         setTimeout(() => {console.log("Balance is now 0. Stopped betting.")}, 1000);
        
         
