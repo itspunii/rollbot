@@ -123,7 +123,10 @@ function getLastRoll() {
         console.log(`Black is on a ${blackStreak} streak.`);
         console.log(" ");
 
-
+        if (blackStreak >= 3) {
+            setBetAmount(safeBetAmount);
+            $("#blackBetButton").click();
+        }
 
     } else if (document.getElementById("lastRoll").firstChild.className.includes("bg-green")) { //Green
 
