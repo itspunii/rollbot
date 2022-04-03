@@ -16,6 +16,8 @@ function start(x, y) {
     currentBalance = Number(document.getElementById("balanceAmountMain").innerHTML.replace(/<|!|-|>/g, ""));
     setTimerid();
     setGreenBetid();
+    setRedBetid();
+    setBlackBetid();
     setSideButtonsid();
     setDefaultBetAmount();
     getCurrentTimer();
@@ -30,10 +32,24 @@ function setTimerid() {
 }
 
 function setGreenBetid() {
-    $(".bet-list-buttons").attr("id", "greenBetButtonMain");
-    document.getElementById("greenBetButtonMain").children[1].setAttribute("id", "greenBetButtonPar");
+    $(".bet-list-buttons").attr("id", "betButtonMain");
+    document.getElementById("betButtonMain").children[1].setAttribute("id", "greenBetButtonPar");
     document.getElementById("greenBetButtonPar").firstChild.setAttribute("id", "greenBetButtonPar2");
     document.getElementById("greenBetButtonPar2").children[1].setAttribute("id", "greenBetButton");
+}
+
+function setRedBetid() {
+    $(".bet-list-buttons").attr("id", "betButtonMain");
+    document.getElementById("betButtonMain").children[0].setAttribute("id", "redBetButtonPar");
+    document.getElementById("redBetButtonPar").firstChild.setAttribute("id", "redBetButtonPar2");
+    document.getElementById("redBetButtonPar2").children[1].setAttribute("id", "redBetButton");
+}
+
+function setBlackBetid() {
+    $(".bet-list-buttons").attr("id", "betButtonMain");
+    document.getElementById("betButtonMain").children[2].setAttribute("id", "blackBetButtonPar");
+    document.getElementById("blackBetButtonPar").firstChild.setAttribute("id", "blackBetButtonPar2");
+    document.getElementById("blackBetButtonPar2").children[1].setAttribute("id", "blackBetButton");
 }
 
 function setSideButtonsid() {
@@ -91,6 +107,12 @@ function getLastRoll() {
         console.log("Last roll is red"); 
         console.log(`Red is on a ${redStreak} streak.`);
         console.log(" ");
+
+        if (redStreak >= 3) {
+            setBetAmount(safeBetAmount);
+            $("#redBetButton").click();
+        }
+
     } else if (document.getElementById("lastRoll").firstChild.className.includes("bg-black")) { //Black
 
         blackStreak++;
@@ -100,6 +122,9 @@ function getLastRoll() {
         console.log("Last roll is black");
         console.log(`Black is on a ${blackStreak} streak.`);
         console.log(" ");
+
+
+
     } else if (document.getElementById("lastRoll").firstChild.className.includes("bg-green")) { //Green
 
         greenStreak++;
@@ -123,12 +148,13 @@ function getLastRoll() {
 
 
 function test() {
-    //hello
+    
+    
 }
 /*  TODO
 
-Add total balance check to not bet $1000 on triple green chance
 Get jackpot amount and maybe get the money added to the jackpot after a roll.
+Bet 25% of balance if red/black streak >10.
 Log initial balance on start().
 Log all bet amounts.
 
