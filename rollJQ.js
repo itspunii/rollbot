@@ -3,14 +3,15 @@
 //--------------End JQuery------------------
 
 var timeLeft = $("#timer").text();
-var redStreak = 0, blackStreak = 0, greenStreak = 0, lastRollCall = 0;
+var redStreak = 0, blackStreak = 0, greenStreak = 0, lastRollCall = 0, minStopAmount = 0, maxStopAmount = 0;
 var safeBetAmount = 1, doubleGreenBetAmount = 10;
 var currentBalance, timerInt;
 
 createMenu();
 
 function start() {
-    console.log("Started")
+    console.log("Started");
+    $("#menuOutput").text(`Started betting.`);
     $(".currency-value").attr("id", "balanceAmountMain"); //Set balance id.
     currentBalance = Number(document.getElementById("balanceAmountMain").innerHTML.replace(/<|!|-|>/g, ""));
     setTimerid();
@@ -18,16 +19,39 @@ function start() {
     setRedBetid();
     setBlackBetid();
     setSideButtonsid();
-    setDefaultBetAmount();
+    clearBetAmount();
     getCurrentTimer();
+
+    //checkAllIds(); Find a way to check ids.
     timerInt = setInterval(getCurrentTimer, 1000);
+}
+
+function stop() {
+    clearInterval(timerInt);
+    timerInt = null;
+    console.log("Stopped.");
+    $("#menuOutput").text(`Stopped betting.`);
 }
 
 function createMenu() {
     $("div.left").append("<button id='rollMenuButton' onclick='rollMenu()' style='; margin-top:25px; margin-left:50%; z-index:9999; background-color: #202023; width: 100px; border: solid 1px black''>roll</button>");
-    $("body").prepend("<div id='rollMenuDiv' style='display: none; position: absolute; background-color: rgb(64, 64, 67); top: 70px; left: 290px; height: 40px; width: 1000px; z-index: 999;'></div>");
-    $("#rollMenuDiv").append("<input id='safeBetAmountInput' style='position: absolute; left: 10px;' placeholder='Bet amount'>");
-    $("#rollMenuDiv").append("<button id='safeBetAmountButton' style='position: absolute; left: 175px;'>Apply</button>");
+    $("body").prepend("<div id='rollMenuDiv' style='display: none; position: fixed; background-color: rgb(64, 64, 67); bottom: 0px; left: 290px; height: 100px; width: 100%; z-index: 999;'></div>");
+    $("#rollMenuDiv").append("<input id='safeBetAmountInput' style='position: absolute; left: 10px; top: 5px; width: 160px;' placeholder='Bet amount'>");
+    $("#rollMenuDiv").append("<button id='safeBetAmountButton' style='position: absolute; left: 180px; top: 5px;'>Apply</button>");
+
+    $("#rollMenuDiv").append("<input id='doubleGreenBetAmountInput' style='position: absolute; left: 10px; top: 35px; width: 160px;' placeholder='Double green bet amount'>");
+    $("#rollMenuDiv").append("<button id='doubleGreenBetAmountButton' style='position: absolute; left: 180px; top: 35px;'>Apply</button>");
+
+    $("#rollMenuDiv").append("<button id='startRollButton' style='position: absolute; left: 40%; top: 10px; background-color: green;' onclick='start()'>Start</button>");
+    $("#rollMenuDiv").append("<button id='stopRollButton' style='position: absolute; left: 40%; bottom: 10px; background-color: red; color: white' onclick='stop()'>Stop</button>");
+
+    $("#rollMenuDiv").append("<span id='menuOutput' style='position: absolute; left: 5px; bottom: 5px; color: white;'></span>");
+
+    $("#rollMenuDiv").append("<input id='minStopAmountInput' style='position: absolute; left: 250px; top: 5px; width: 160px;' placeholder='Min stop amount.'>");
+    $("#rollMenuDiv").append("<button id='minStopAmountButton' style='position: absolute; left: 420px; top: 5px;'>Apply</button>");
+
+    $("#rollMenuDiv").append("<input id='maxStopAmountInput' style='position: absolute; left: 250px; top: 35px; width: 160px;' placeholder='Max stop amount.'>");
+    $("#rollMenuDiv").append("<button id='maxStopAmountButton' style='position: absolute; left: 420px; top: 35px;'>Apply</button>");
 }
 
 function setTimerid() {
@@ -41,7 +65,7 @@ function setGreenBetid() {
     $(".bet-list-buttons").attr("id", "betButtonMain");
     document.getElementById("betButtonMain").children[1].setAttribute("id", "greenBetButtonPar");
     document.getElementById("greenBetButtonPar").firstChild.setAttribute("id", "greenBetButtonPar2");
-    document.getElementById("greenBetButtonPar2").children[1].setAttribute("id", "greenBetButton");
+    document.getElementById("greenBetButtonPar2").children[1].setAttribute("id", "greenBetButton");    
 }
 
 function setRedBetid() {
@@ -65,10 +89,10 @@ function setSideButtonsid() {
     $("[data-test=clear]").attr("id", "clearButton");
 }
 
-function setDefaultBetAmount() {
+function clearBetAmount() {
     $("#clearButton").click();
-    $("#plus1Button").click();
 }
+
 function setBetAmount(x) {
     $("#clearButton").click();
     for (let y = 0; y < x; y++) {
@@ -78,6 +102,7 @@ function setBetAmount(x) {
 }
 
 function getCurrentTimer() {
+    currentBalance = Number(document.getElementById("balanceAmountMain").innerHTML.replace(/<|!|-|>/g, ""));
     timeLeft = $("#timer").text();
     //console.log(`getCurrentTimer() called at ${timeLeft}s.`)
 
@@ -85,7 +110,7 @@ function getCurrentTimer() {
         lastRollCall = 0;
     }
 
-    if (timeLeft <= 13 && timeLeft > 5) {
+    if (timeLeft <= 13 && timeLeft >= 5) {
         if (lastRollCall == 0) {
             lastRollCall++;
             getLastRoll();
@@ -94,16 +119,44 @@ function getCurrentTimer() {
 
 }
 
+function checkAllIds() {
+    //Initiate bigass if chain.
+    if (!$("#balanceAmountMain").attr("id") == "balanceAmountMain") {
+        console.log("balanceAmountMain ID not set. Refresh and try again.");
+    }
+    if (!$("#lastRoll").attr("id") == "lastRoll") {
+        console.log("lastRoll ID not set. Refresh and try again.");
+    }
+    if (!$("greenBetButton").attr("id") == "greenBetButton") {
+        console.log("greenBetButton ID not set. Refresh and try again.");
+    }
+    if (!$("redBetButton").attr("id") == "redBetButton") {
+        console.log("redBetButton ID not set. Refresh and try again.");
+    }
+    if (!$("blackBetButtonn").attr("id") == "blackBetButton") {
+        console.log("blackBetButton ID not set. Refresh and try again.");
+    }
+    if (!$("div2Button").attr("id") == "div2Button") {
+        console.log("div2Button ID not set. Refresh and try again.");
+    }
+    if (!$("plus1Button").attr("id") == "plus1Button") {
+        console.log("plus1Button ID not set. Refresh and try again.");
+    }
+    if (!$("clearButton").attr("id") == "clearButton") {
+        console.log("clearButton ID not set. Refresh and try again.");
+    }
+}
+
 function getLastRoll() {
-    if (currentBalance == 0) {
+    if (currentBalance <= minStopAmount || currentBalance >= maxStopAmount) {
         clearInterval(timerInt);
         getCurrentTimer = null;
-        setTimeout(() => {console.log("Balance is now 0. Stopped betting.")}, 1000);
+        console.log(`Balance has reached ${currentBalance}. Stopped betting.`);
+        $("#menuOutput").text(`Balance has reached ${currentBalance}. Stopped betting.`);
        
         
     }
 
-    //console.log("getLastRoll() called.")
     if (document.getElementById("lastRoll").firstChild.className.includes("bg-red")) { //Red
 
         redStreak++;
@@ -143,7 +196,7 @@ function getLastRoll() {
         if (greenStreak == 1) {
             setBetAmount(safeBetAmount);
             $("#greenBetButton").click();
-        } else if (greenStreak == 2) {
+        } else if (greenStreak >= 2) {
             setBetAmount(doubleGreenBetAmount)
             $("#greenBetButton").click();
         }
@@ -170,19 +223,55 @@ function rollMenu() {
 }
 
 $("#safeBetAmountButton").click(() => {
-    safeBetAmount = $("#safeBetAmountInput").val();
-    console.log(`Bet amount set to ${safeBetAmount}`);
-    $("#safeBetAmountInput").val("")
+    if ($("#safeBetAmountInput").val() != 0) {
+        safeBetAmount = $("#safeBetAmountInput").val();
+        console.log(`Bet amount set to ${safeBetAmount}`);
+        $("#menuOutput").text(`Bet amount set to ${safeBetAmount}`);
+        $("#safeBetAmountInput").val("")
+    } else {
+        console.log(`Invalid value.`);
+        $("#menuOutput").text(`Invalid value.`);
+    }
+    
+});
+
+$("#doubleGreenBetAmountButton").click(() => {
+    if ($("#doubleGreenBetAmountInput").val() != 0) {
+        doubleGreenBetAmount = $("#doubleGreenBetAmountInput").val();
+        console.log(`Double green bet amount set to ${doubleGreenBetAmount}`);
+        $("#menuOutput").text(`Double green bet amount set to ${doubleGreenBetAmount}`);
+        $("#doubleGreenBetAmountInput").val("")
+    } else {
+        console.log(`Invalid value.`);
+        $("#menuOutput").text(`Invalid value.`);
+    }
+    
+});
+
+$("#minStopAmountButton").click(() => {
+        minStopAmount = $("#minStopAmountInput").val();
+        console.log(`Min stop amount set to ${minStopAmount}`);
+        $("#menuOutput").text(`Min stop amount set to ${minStopAmount}`);
+        $("#minStopAmountInput").val("")    
+});
+
+$("#maxStopAmountButton").click(() => {
+        maxStopAmount = $("#maxStopAmountInput").val();
+        console.log(`Max stop bet amount set to ${maxStopAmount}`);
+        $("#menuOutput").text(`Max stop bet amount set to ${maxStopAmount}`);
+        $("#maxStopAmountInput").val("")
 });
 
 function test() {
     
-   
+
     
 }
 /*  TODO
 
-
+Styling {
+    Fix Menu button position.
+}
 
 Menu {
     try to get rainbows.
@@ -190,11 +279,8 @@ Menu {
     bet on train minimum amount input + button.
     bet on double green checkbox.
     bet on triple green checkbox.
-    triple green bet amount input + button.
     Add peakBalance stat in menu.
-    Add start() button in menu.
-    stop betting @ balance amount input + button.
-
+    stats panel (safeBetAmount, doubleGreenBetAmount, etc.)
 
 }
 
@@ -205,4 +291,4 @@ Log all bet amounts.
 
 */
 
-//V1.2.1
+//V1.3
