@@ -274,6 +274,7 @@ Styling {
 }
 
 Menu {
+    Add checks to Start button to not start until all 4 inputs were applied.
     try to get rainbows.
     bet on train checkbox.
     bet on train minimum amount input + button.
