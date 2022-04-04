@@ -9,6 +9,7 @@ var redStreak = 0, blackStreak = 0, greenStreak = 0, lastRollCall = 0;
 var safeBetAmount = 1, doubleGreenBetAmount = 10;
 var currentBalance, timerInt;
 
+createMenu();
 
 function start(x, y) {
     console.log("Started")
@@ -22,6 +23,13 @@ function start(x, y) {
     setDefaultBetAmount();
     getCurrentTimer();
     timerInt = setInterval(getCurrentTimer, 1000);
+}
+
+function createMenu() {
+    $("div.left").append("<button id='rollMenuButton' onclick='rollMenu()' style='; margin-top:25px; margin-left:50%; z-index:9999; background-color: #202023; width: 100px; border: solid 1px black''>roll</button>");
+    $("body").prepend("<div id='rollMenuDiv' style='display: none; position: absolute; background-color: rgb(64, 64, 67); top: 70px; left: 290px; height: 40px; width: 1000px; z-index: 999;'></div>");
+    $("#rollMenuDiv").append("<input id='safeBetAmountInput' style='position: absolute; left: 10px;' placeholder='Bet amount'>");
+    $("#rollMenuDiv").append("<button id='safeBetAmountButton' style='position: absolute; left: 175px;'>Apply</button>");
 }
 
 function setTimerid() {
@@ -149,12 +157,35 @@ function getLastRoll() {
 
 }
 
+var menuOpen = 0
+function rollMenu() {
+    menuOpen++;
+    if (menuOpen == 1) {
+        $("#rollMenuDiv").show()
+    }
+
+    if (menuOpen == 2) {
+        menuOpen = 0;
+        $("#rollMenuDiv").hide()
+    }
+    
+}
+
+$("#safeBetAmountButton").click(() => {
+    safeBetAmount = $("#safeBetAmountInput").val();
+    console.log(`Bet amount set to ${safeBetAmount}`);
+    $("#safeBetAmountInput").val("")
+});
 
 function test() {
     
+   
     
 }
 /*  TODO
+
+Add peakBalance in menu.
+Add start() in menu.
 
 Get jackpot amount and maybe get the money added to the jackpot after a roll.
 Bet 25% of balance if red/black streak >10.
