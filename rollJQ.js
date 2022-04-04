@@ -3,7 +3,7 @@
 //--------------End JQuery------------------
 
 var timeLeft = $("#timer").text();
-var redStreak = 0, blackStreak = 0, greenStreak = 0, lastRollCall = 0, minStopAmount = 0, maxStopAmount = 0;
+var redStreak = 0, blackStreak = 0, greenStreak = 0, lastRollCall = 0, minStopAmount = 0, maxStopAmount = 200;
 var safeBetAmount = 1, doubleGreenBetAmount = 10;
 var currentBalance, timerInt;
 
@@ -35,7 +35,11 @@ function stop() {
 
 function createMenu() {
     $("div.left").append("<button id='rollMenuButton' onclick='rollMenu()' style='; margin-top:25px; margin-left:50%; z-index:9999; background-color: #202023; width: 100px; border: solid 1px black''>roll</button>");
-    $("body").prepend("<div id='rollMenuDiv' style='display: none; position: fixed; background-color: rgb(64, 64, 67); bottom: 0px; left: 290px; height: 100px; width: 100%; z-index: 999;'></div>");
+    $("body").prepend("<div id='rollMenuDiv' style='display: none; position: fixed; background-color: rgb(64, 64, 67); bottom: 0px; left: 290px; height: 100px; width: 100%; z-index: 995;'></div>");
+    $("#rollMenuDiv").prepend("<div id='rollMenuStatsDiv' style='display: none; position: fixed; background-color: rgb(64, 64, 67); bottom: 0px; left: 290px; height: 100px; width: 100%; z-index: 996;'></div>");
+
+    $("#rollMenuDiv").append("<button id='showStatsMenu' onclick='statsMenu()' style='position: absolute; left: 75%; top: 5px; z-index: 998'>Stats</button>");
+
     $("#rollMenuDiv").append("<input id='safeBetAmountInput' style='position: absolute; left: 10px; top: 5px; width: 160px;' placeholder='Bet amount'>");
     $("#rollMenuDiv").append("<button id='safeBetAmountButton' style='position: absolute; left: 180px; top: 5px;'>Apply</button>");
 
@@ -52,6 +56,11 @@ function createMenu() {
 
     $("#rollMenuDiv").append("<input id='maxStopAmountInput' style='position: absolute; left: 250px; top: 35px; width: 160px;' placeholder='Max stop amount.'>");
     $("#rollMenuDiv").append("<button id='maxStopAmountButton' style='position: absolute; left: 420px; top: 35px;'>Apply</button>");
+
+    $("#rollMenuStatsDiv").append(`<span id='statsSafeBetAmount' style='position: absolute; color: white; left: 5px; top: 5px;'>Bet amount: ${safeBetAmount}</span>`);
+    $("#rollMenuStatsDiv").append(`<span id='statsTripleGreenBetAmount' style='position: absolute; color: white; left: 5px; top: 25px;'>3x Green bet amount: ${doubleGreenBetAmount}</span>`);
+    $("#rollMenuStatsDiv").append(`<span id='statsMinStop' style='position: absolute; color: white; left: 5px; top: 45px;'>Min stop amount: ${minStopAmount}</span>`);
+    $("#rollMenuStatsDiv").append(`<span id='statMaxStop' style='position: absolute; color: white; left: 5px; top: 65px;'>Max stop amount: ${maxStopAmount}</span>`);
 }
 
 function setTimerid() {
@@ -119,6 +128,7 @@ function getCurrentTimer() {
 
 }
 
+//This doesnt work.
 function checkAllIds() {
     //Initiate bigass if chain.
     if (!$("#balanceAmountMain").attr("id") == "balanceAmountMain") {
@@ -208,7 +218,7 @@ function getLastRoll() {
 
 }
 
-var menuOpen = 0
+var menuOpen = 0;
 function rollMenu() {
     menuOpen++;
     if (menuOpen == 1) {
@@ -221,6 +231,27 @@ function rollMenu() {
     }
     
 }
+var statsOpen = 0;
+function statsMenu() {
+    statsOpen++;
+    if (statsOpen == 1) {
+        $("#rollMenuStatsDiv").show()
+        $("#showStatsMenu").text("Options");
+    }
+
+    if (statsOpen == 2) {
+        statsOpen = 0;
+        $("#rollMenuStatsDiv").hide()
+        $("#showStatsMenu").text("Stats");
+    }
+}
+
+function updateStats() {
+    $("#statsSafeBetAmount").text(`Bet amount: ${safeBetAmount}`);
+    $("#statsTripleGreenBetAmount").text(`3x Green bet amount: ${doubleGreenBetAmount}`);
+    $("#statsMinStop").text(`Min stop amount: ${minStopAmount}`);
+    $("#statsMaxStop").text(`Max stop amount: ${maxStopAmount}`);
+}
 
 $("#safeBetAmountButton").click(() => {
     if ($("#safeBetAmountInput").val() != 0) {
@@ -232,7 +263,7 @@ $("#safeBetAmountButton").click(() => {
         console.log(`Invalid value.`);
         $("#menuOutput").text(`Invalid value.`);
     }
-    
+    updateStats()
 });
 
 $("#doubleGreenBetAmountButton").click(() => {
@@ -245,21 +276,23 @@ $("#doubleGreenBetAmountButton").click(() => {
         console.log(`Invalid value.`);
         $("#menuOutput").text(`Invalid value.`);
     }
-    
+    updateStats()
 });
 
 $("#minStopAmountButton").click(() => {
-        minStopAmount = $("#minStopAmountInput").val();
-        console.log(`Min stop amount set to ${minStopAmount}`);
-        $("#menuOutput").text(`Min stop amount set to ${minStopAmount}`);
-        $("#minStopAmountInput").val("")    
+    minStopAmount = $("#minStopAmountInput").val();
+    console.log(`Min stop amount set to ${minStopAmount}`);
+    $("#menuOutput").text(`Min stop amount set to ${minStopAmount}`);
+    $("#minStopAmountInput").val("")    
+    updateStats()
 });
 
 $("#maxStopAmountButton").click(() => {
-        maxStopAmount = $("#maxStopAmountInput").val();
-        console.log(`Max stop bet amount set to ${maxStopAmount}`);
-        $("#menuOutput").text(`Max stop bet amount set to ${maxStopAmount}`);
-        $("#maxStopAmountInput").val("")
+    maxStopAmount = $("#maxStopAmountInput").val();
+    console.log(`Max stop bet amount set to ${maxStopAmount}`);
+    $("#menuOutput").text(`Max stop bet amount set to ${maxStopAmount}`);
+    $("#maxStopAmountInput").val("")
+    updateStats()
 });
 
 function test() {
@@ -277,19 +310,19 @@ Menu {
     Add checks to Start button to not start until all 4 inputs were applied.
     try to get rainbows.
     bet on train checkbox.
-    bet on train minimum amount input + button.
     bet on double green checkbox.
     bet on triple green checkbox.
     Add peakBalance stat in menu.
-    stats panel (safeBetAmount, doubleGreenBetAmount, etc.)
+    Add start betting again checkbox when jackpot reaches a defined amount and balance respects minStop/maxStop.
 
 }
 
 Get jackpot amount and maybe get the money added to the jackpot after a roll.
-Bet 25% of balance if red/black streak >10.
 Log initial balance on start().
 Log all bet amounts.
+Log user level on start.
+Log gems amount on start.
 
 */
 
-//V1.3
+//V1.3.2
