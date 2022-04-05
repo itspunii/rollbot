@@ -190,7 +190,7 @@ function getLastRoll() {
         console.log(`Red is on a ${redStreak} streak.`);
         console.log(" ");
 
-        if (redStreak >= trainBet && enableTrainBet == 1) {
+        if (redStreak >= trainAmount && enableTrainBet == 1) {
             setBetAmount(safeBetAmount);
             $("#redBetButton").click();
         }
@@ -205,7 +205,7 @@ function getLastRoll() {
         console.log(`Black is on a ${blackStreak} streak.`);
         console.log(" ");
 
-        if (blackStreak >= trainBet && enableTrainBet == 1) {
+        if (blackStreak >= trainAmount && enableTrainBet == 1) {
             setBetAmount(safeBetAmount);
             $("#blackBetButton").click();
         }
