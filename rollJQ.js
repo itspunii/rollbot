@@ -324,8 +324,10 @@ $("#betTrainButton").click(() => {
         $("#betTrainButton").css("backgroundColor", "red");
         $("#betTrainButton").css("color", "white");
         $("#menuOutput").text(`Stopped betting on trains.`);
+        enableTrainBet = 0;
     } else if (betTrainToggle == 2) {
         betTrainToggle = 0;
+        enableTrainBet = 1
         $("#betTrainButton").css("backgroundColor", "lime");
         $("#betTrainButton").css("color", "black");
         $("#menuOutput").text(`Started betting on trains.`);
@@ -337,11 +339,13 @@ var betDoubleGreenToggle = 0;
 $("#betDoubleGreenButton").click(() => {
     betDoubleGreenToggle++;
     if (betDoubleGreenToggle == 1) {
+        enableDoubleGreenBet = 0;
         $("#betDoubleGreenButton").css("backgroundColor", "red");
         $("#betDoubleGreenButton").css("color", "white");
         $("#menuOutput").text(`Stopped betting on double green.`);
     } else if (betDoubleGreenToggle == 2) {
         betDoubleGreenToggle = 0;
+        enableDoubleGreenBet = 1;
         $("#betDoubleGreenButton").css("backgroundColor", "lime");
         $("#betDoubleGreenButton").css("color", "black");
         $("#menuOutput").text(`Stopped betting on double green.`);
@@ -353,11 +357,13 @@ var betTripleGreenToggle = 0;
 $("#betTripleGreenButton").click(() => {
     betTripleGreenToggle++;
     if (betTripleGreenToggle == 1) {
+        enableTripleGreenBet = 0;
         $("#betTripleGreenButton").css("backgroundColor", "red");
         $("#betTripleGreenButton").css("color", "white");
         $("#menuOutput").text(`Stopped betting on triple green.`);
     } else if (betTripleGreenToggle == 2) {
         betTripleGreenToggle = 0;
+        enableTripleGreenBet = 1;
         $("#betTripleGreenButton").css("backgroundColor", "lime");
         $("#betTripleGreenButton").css("color", "black");
         $("#menuOutput").text(`Stopped betting on triple green.`);
@@ -369,11 +375,13 @@ var betMultiGreenToggle = 0;
 $("#betMultiGreenButton").click(() => {
     betMultiGreenToggle++;
     if (betMultiGreenToggle == 1) {
+        enableMultiGreenBet = 0;
         $("#betMultiGreenButton").css("backgroundColor", "red");
         $("#betMultiGreenButton").css("color", "white");
         $("#menuOutput").text(`Stopped betting on multi green.`);
     } else if (betMultiGreenToggle == 2) {
         betMultiGreenToggle = 0;
+        enableMultiGreenBet = 1;
         $("#betMultiGreenButton").css("backgroundColor", "lime");
         $("#betMultiGreenButton").css("color", "black");
         $("#menuOutput").text(`Stopped betting on multi green.`);
@@ -408,4 +416,4 @@ Log gems amount on start.
 
 */
 
-//V1.4.1
+//V1.4.3
