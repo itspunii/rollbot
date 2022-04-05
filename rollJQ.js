@@ -15,7 +15,7 @@ function start() {
     $("#menuOutput").text(`Started betting.`);
     $(".currency-value").attr("id", "balanceAmountMain"); //Set balance id.
     currentBalance = Number(document.getElementById("balanceAmountMain").innerHTML.replace(/<|!|-|>/g, ""));
-    $("#statsBalanceOnStart").text(currentBalance);
+    $("#statsBalanceOnStart").text(`Balance on start: ${currentBalance}`);
     setTimerid();
     setGreenBetid();
     setRedBetid();
@@ -408,4 +408,4 @@ Log gems amount on start.
 
 */
 
-//V1.4
+//V1.4.1
