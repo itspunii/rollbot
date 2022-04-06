@@ -7,6 +7,7 @@ var redStreak = 0, blackStreak = 0, greenStreak = 0, lastRollCall = 0, minStopAm
 var enableMultiGreenBet = 1, balanceOnStart = 0;
 var safeBetAmount = 1, doubleGreenBetAmount = 10;
 var currentBalance, timerInt, gemsOnStart;
+var overrideBalance1, overrideBalance2, overrideBalance3, overrideBalance4, overrideBalance5, overrideAmount1, overrideAmount2, overrideAmount3, overrideAmount4, overrideAmount5;
 
 createMenu();
 
@@ -36,31 +37,32 @@ function stop() {
 }
 
 function createMenu() {
+    //Main roll menu
     $("div.left").append("<button id='rollMenuButton' onclick='rollMenu()' style='; margin-top:25px; margin-left:50%; z-index:9999; background-color: #202023; width: 100px; border: solid 1px black''>roll</button>");
     $("body").prepend("<div id='rollMenuDiv' style='display: none; position: fixed; background-color: rgb(64, 64, 67); bottom: 0px; left: 290px; height: 200px; width: 100%; z-index: 995;'></div>");
     $("#rollMenuDiv").prepend("<div id='rollMenuStatsDiv' style='display: none; position: fixed; background-color: rgb(64, 64, 67); bottom: 0px; left: 290px; height: 200px; width: 100%; z-index: 996;'></div>");
+    $("#rollMenuDiv").prepend("<div id='rollMenuOverridesDiv' style='display: none; position: fixed; background-color: rgb(64, 64, 67); bottom: 0px; left: 290px; height: 200px; width: 100%; z-index: 996;'></div>");
 
-    $("#rollMenuDiv").append("<button id='showStatsMenu' onclick='statsMenu()' style='position: absolute; left: 75%; top: 5px; z-index: 998'>Stats</button>");
-
-    $("#rollMenuDiv").append("<input id='safeBetAmountInput' style='position: absolute; left: 10px; top: 5px; width: 150px;' placeholder='Bet amount'>");
-    $("#rollMenuDiv").append("<button id='applySettingsButton' onclick='applySettings()' style='position: absolute; left: 180px; top: 5px;'>Apply</button>");
-
-    $("#rollMenuDiv").append("<input id='doubleGreenBetAmountInput' style='position: absolute; left: 10px; top: 35px; width: 150px;' placeholder='3x green bet amount'>");
-    //$("#rollMenuDiv").append("<button id='doubleGreenBetAmountButton' style='position: absolute; left: 180px; top: 35px;'>Apply</button>");
-
-    $("#rollMenuDiv").append("<input id='trainAmountInput' style='position: absolute; left: 10px; top: 65px; width: 150px;' placeholder='Train amount'>");
-    //$("#rollMenuDiv").append("<button id='trainAmountButton' style='position: absolute; left: 180px; top: 65px;'>Apply</button>");
-
-    $("#rollMenuDiv").append("<button id='startRollButton' style='position: absolute; left: 70%; top: 35px; background-color: green;' onclick='start()'>Start</button>");
-    $("#rollMenuDiv").append("<button id='stopRollButton' style='position: absolute; left: 70%; bottom: 10px; background-color: red; color: white' onclick='stop()'>Stop</button>");
+    //Menu tabs buttons
+    $("#rollMenuDiv").append("<button id='showOptionsMenu' onclick='optionsMenu()' style='position: absolute; left: 75%; top: 5px; z-index: 998'>Options</button>");
+    $("#rollMenuDiv").append("<button id='showStatsMenu' onclick='statsMenu()' style='position: absolute; left: 75%; top: 25px; z-index: 998'>Stats</button>");
+    $("#rollMenuDiv").append("<button id='showOverridesMenu' onclick='overridesMenu()' style='position: absolute; left: 75%; top: 45px; z-index: 998'>Overrides</button>");
 
     $("#rollMenuDiv").append("<span id='menuOutput' style='position: absolute; left: 5px; bottom: 5px; color: white;'></span>");
 
+    //Options Inputs
+    $("#rollMenuDiv").append("<button id='applySettingsButton' onclick='applySettings()' style='position: absolute; left: 180px; top: 5px;'>Apply</button>");
+    $("#rollMenuDiv").append("<input id='safeBetAmountInput' style='position: absolute; left: 10px; top: 5px; width: 150px;' placeholder='Bet amount'>");
+    $("#rollMenuDiv").append("<input id='doubleGreenBetAmountInput' style='position: absolute; left: 10px; top: 35px; width: 150px;' placeholder='3x green bet amount'>");
+    $("#rollMenuDiv").append("<input id='trainAmountInput' style='position: absolute; left: 10px; top: 65px; width: 150px;' placeholder='Train amount'>");
     $("#rollMenuDiv").append("<input id='minStopAmountInput' style='position: absolute; left: 250px; top: 5px; width: 150px;' placeholder='Min stop amount.'>");
-    //$("#rollMenuDiv").append("<button id='minStopAmountButton' style='position: absolute; left: 420px; top: 5px;'>Apply</button>");
-
     $("#rollMenuDiv").append("<input id='maxStopAmountInput' style='position: absolute; left: 250px; top: 35px; width: 150px;' placeholder='Max stop amount.'>");
-   // $("#rollMenuDiv").append("<button id='maxStopAmountButton' style='position: absolute; left: 420px; top: 35px;'>Apply</button>");
+
+    //Start/Stop button
+    $("#rollMenuDiv").append("<button id='startRollButton' style='position: absolute; left: 70%; top: 35px; background-color: green;' onclick='start()'>Start</button>");
+    $("#rollMenuDiv").append("<button id='stopRollButton' style='position: absolute; left: 70%; bottom: 10px; background-color: red; color: white' onclick='stop()'>Stop</button>");
+
+    
 
     $("#rollMenuDiv").append("<button id='betTrainButton' style='position: absolute; left: 700px; top: 5px; background-color: lime; border: none'>Bet Train</button>");
     $("#rollMenuDiv").append("<button id='betDoubleGreenButton' style='position: absolute; left: 700px; top: 25px; background-color: lime; border: none'>Bet 2x Green</button>");
@@ -76,6 +78,25 @@ function createMenu() {
     //$("#rollMenuStatsDiv").append(`<span id='statsGemsOnStart' style='position: absolute; color: white; left: 50px; top: 25px;'>Max stop amount: ${gemsOnStart}</span>`);
     //$("#rollMenuStatsDiv").append(`<span id='statsLevelOnStart' style='position: absolute; color: white; left: 50px; top: 45px;'>Max stop amount: ${levelOnStart}</span>`);
     //$("#rollMenuStatsDiv").append(`<span id='statsMaxStop' style='position: absolute; color: white; left: 50px; top: 65px;'>Max stop amount: ${maxStopAmount}</span>`);
+
+    //Overrides Div
+    $("#rollMenuOverridesDiv").append("<button id='applyOverridesButton' onclick='applyOverrides()' style='position: absolute; left: 150px; top: 155px;'>Apply</button>");
+
+    $("#rollMenuOverridesDiv").append("<input id='overrideBalanceInput1' style='position: absolute; left: 5px; top: 5px;' placeholder='Balance'>");
+    $("#rollMenuOverridesDiv").append("<input id='overrideBetAmountInput1' style='position: absolute; left: 180px; top: 5px;' placeholder='Bet amount'>");
+
+    $("#rollMenuOverridesDiv").append("<input id='overrideBalanceInput2' style='position: absolute; left: 5px; top: 35px;' placeholder='Balance'>");
+    $("#rollMenuOverridesDiv").append("<input id='overrideBetAmountInput2' style='position: absolute; left: 180px; top: 35px;' placeholder='Bet amount'>");
+
+    $("#rollMenuOverridesDiv").append("<input id='overrideBalanceInput3' style='position: absolute; left: 5px; top: 65px;' placeholder='Balance'>");
+    $("#rollMenuOverridesDiv").append("<input id='overrideBetAmountInput3' style='position: absolute; left: 180px; top: 65px;' placeholder='Bet amount'>");
+
+    $("#rollMenuOverridesDiv").append("<input id='overrideBalanceInput4' style='position: absolute; left: 5px; top: 95px;' placeholder='Balance'>");
+    $("#rollMenuOverridesDiv").append("<input id='overrideBetAmountInput4' style='position: absolute; left: 180px; top: 95px;' placeholder='Bet amount'>");
+
+    $("#rollMenuOverridesDiv").append("<input id='overrideBalanceInput5' style='position: absolute; left: 5px; top: 125px;' placeholder='Balance'>");
+    $("#rollMenuOverridesDiv").append("<input id='overrideBetAmountInput5' style='position: absolute; left: 180px; top: 125px;' placeholder='Bet amount'>");
+
 }
 
 function setTimerid() {
@@ -172,12 +193,36 @@ function checkAllIds() {
 }
 
 function getLastRoll() {
+    switch (currentBalance) {
+        case (currentBalance >= overrideBalance1):
+            safeBetAmount = overrideAmount1
+            console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance1}.`)
+            break;
+        case (currentBalance >= overrideBalance2):
+            safeBetAmount = overrideAmount2;
+            console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance2}.`)
+            break;
+        case (currentBalance >= overrideBalance3):
+            safeBetAmount = overrideAmount3;
+            console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance3}.`)
+            break;
+        case (currentBalance >= overrideBalance4):
+            safeBetAmount = overrideAmount4;
+            console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance4}.`)
+            break;
+        case (currentBalance >= overrideBalance5):
+            safeBetAmount = overrideAmount5;
+            console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance5}.`)
+            break;
+        default:
+            console.log("Something went wrong!");
+            break;
+    }
+
     if (currentBalance <= minStopAmount || currentBalance >= maxStopAmount) {
         clearInterval(timerInt);
         console.log(`Balance has reached ${currentBalance}. Stopped betting.`);
-        $("#menuOutput").text(`Balance has reached ${currentBalance}. Stopped betting.`);
-       
-        
+        $("#menuOutput").text(`Balance has reached ${currentBalance}. Stopped betting.`);     
     }
 
     if (document.getElementById("lastRoll").firstChild.className.includes("bg-red")) { //Red
@@ -248,19 +293,20 @@ function rollMenu() {
     }
     
 }
-var statsOpen = 0;
-function statsMenu() {
-    statsOpen++;
-    if (statsOpen == 1) {
-        $("#rollMenuStatsDiv").show()
-        $("#showStatsMenu").text("Options");
-    }
 
-    if (statsOpen == 2) {
-        statsOpen = 0;
-        $("#rollMenuStatsDiv").hide()
-        $("#showStatsMenu").text("Stats");
-    }
+function optionsMenu() {
+        $("#rollMenuStatsDiv").hide();
+        $("#rollMenuOverridesDiv").hide();
+}
+
+function statsMenu() {
+        $("#rollMenuStatsDiv").show()
+        $("#rollMenuOverridesDiv").hide()
+}
+
+function overridesMenu() {
+        $("#rollMenuOverridesDiv").show()
+        $("#rollMenuStatsDiv").hide();
 }
 
 function updateStats() {
@@ -315,6 +361,50 @@ function applySettings() {
 
     $("#menuOutput").text(`Applied settings!`);
     updateStats();
+}
+
+function applyOverrides() {
+    if ($("#overrideBalanceInput1").val() != 0 || $("#overrideBalanceInput1").val() != "") {
+        overrideBalance1 = $("#overrideBalanceInput1").val();
+        console.log(`Override balance 1 set to ${overrideBalance1}.`);
+    }
+    if ($("#overrideBalanceInput2").val() != 0 || $("#overrideBalanceInput2").val() != "") {
+        overrideBalance2 = $("#overrideBalanceInput2").val();
+        console.log(`Override balance 2 set to ${overrideBalance2}.`);
+    }
+    if ($("#overrideBalanceInput3").val() != 0 || $("#overrideBalanceInput3").val() != "") {
+        overrideBalance3 = $("#overrideBalanceInput3").val();
+        console.log(`Override balance 3 set to ${overrideBalance3}.`);
+    }
+    if ($("#overrideBalanceInput4").val() != 0 || $("#overrideBalanceInput4").val() != "") {
+        overrideBalance4 = $("#overrideBalanceInput4").val();
+        console.log(`Override balance 4 set to ${overrideBalance4}.`);
+    }
+    if ($("#overrideBalanceInput5").val() != 0 || $("#overrideBalanceInput5").val() != "") {
+        overrideBalance5 = $("#overrideBalanceInput5").val();
+        console.log(`Override balance 5 set to ${overrideBalance5}.`);
+    }
+    if ($("#overrideBetAmountInput1").val() != 0 || $("#overrideBetAmountInput1").val() != "") {
+        overridesBetAmountInput1 = $("#overrideBetAmountInput1").val();
+        console.log(`Override bet amount 1 set to ${overridesBetAmountInput1}.`);
+    }
+    if ($("#overrideBetAmountInput2").val() != 0 || $("#overrideBetAmountInput2").val() != "") {
+        overridesBetAmountInput2 = $("#overrideBetAmountInput2").val();
+        console.log(`Override bet amount 2 set to ${overridesBetAmountInput2}.`);
+    }
+    if ($("#overrideBetAmountInput3").val() != 0 || $("#overrideBetAmountInput3").val() != "") {
+        overridesBetAmountInput3 = $("#overrideBetAmountInput3").val();
+        console.log(`Override bet amount 3 set to ${overridesBetAmountInput3}.`);
+    }
+    if ($("#overrideBetAmountInput4").val() != 0 || $("#overrideBetAmountInput4").val() != "") {
+        overridesBetAmountInput4 = $("#overrideBetAmountInput4").val();
+        console.log(`Override bet amount 4 set to ${overridesBetAmountInput4}.`);
+    }
+    if ($("#overrideBetAmountInput5").val() != 0 || $("#overrideBetAmountInput5").val() != "") {
+        overridesBetAmountInput5 = $("#overrideBetAmountInput5").val();
+        console.log(`Override bet amount 5 set to ${overridesBetAmountInput5}.`);
+    }
+
 }
 
 var betTrainToggle = 0;
@@ -405,7 +495,6 @@ Menu {
     try to get rainbows.
     Add peakBalance stat in menu.
     Add start betting again checkbox when jackpot reaches a defined amount and balance respects minStop/maxStop.
-    Add Overrides tab: add 3-5 inputs with "If betAmount >= ${amount} set bet amount to ${input}".
 
 }
 
@@ -416,4 +505,4 @@ Log gems amount on start.
 
 */
 
-//V1.4.3
+//V1.5
