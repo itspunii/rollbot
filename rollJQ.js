@@ -193,7 +193,29 @@ function checkAllIds() {
 }
 
 function getLastRoll() {
-    switch (currentBalance) {
+    if (currentBalance >= overrideBalance1) {
+        safeBetAmount = overrideAmount1
+        console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance1}.`)
+    }
+    if (currentBalance >= overrideBalance2) {
+        safeBetAmount = overrideAmount2
+        console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance2}.`)
+    }
+    if (currentBalance >= overrideBalance3) {
+        safeBetAmount = overrideAmount3
+        console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance3}.`)
+    }
+    if (currentBalance >= overrideBalance4) {
+        safeBetAmount = overrideAmount4
+        console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance4}.`)
+    }
+    if (currentBalance >= overrideBalance5) {
+        safeBetAmount = overrideAmount5
+        console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance5}.`)
+    }
+
+
+  /*  switch (currentBalance) {
         case (currentBalance >= overrideBalance1):
             safeBetAmount = overrideAmount1
             console.log(`Bet amount set to ${safeBetAmount} with balance over ${overrideBalance1}.`)
@@ -217,7 +239,7 @@ function getLastRoll() {
         default:
             console.log("Something went wrong!");
             break;
-    }
+    } */
 
     if (currentBalance <= minStopAmount || currentBalance >= maxStopAmount) {
         clearInterval(timerInt);
@@ -385,24 +407,24 @@ function applyOverrides() {
         console.log(`Override balance 5 set to ${overrideBalance5}.`);
     }
     if ($("#overrideBetAmountInput1").val() != 0 || $("#overrideBetAmountInput1").val() != "") {
-        overridesBetAmountInput1 = $("#overrideBetAmountInput1").val();
-        console.log(`Override bet amount 1 set to ${overridesBetAmountInput1}.`);
+        overrideAmount1 = $("#overrideBetAmountInput1").val();
+        console.log(`Override bet amount 1 set to ${overrideAmount1}.`);
     }
     if ($("#overrideBetAmountInput2").val() != 0 || $("#overrideBetAmountInput2").val() != "") {
-        overridesBetAmountInput2 = $("#overrideBetAmountInput2").val();
-        console.log(`Override bet amount 2 set to ${overridesBetAmountInput2}.`);
+        overrideAmount2 = $("#overrideBetAmountInput2").val();
+        console.log(`Override bet amount 2 set to ${overrideAmount2}.`);
     }
     if ($("#overrideBetAmountInput3").val() != 0 || $("#overrideBetAmountInput3").val() != "") {
-        overridesBetAmountInput3 = $("#overrideBetAmountInput3").val();
-        console.log(`Override bet amount 3 set to ${overridesBetAmountInput3}.`);
+        overrideAmount3 = $("#overrideBetAmountInput3").val();
+        console.log(`Override bet amount 3 set to ${overrideAmount3}.`);
     }
     if ($("#overrideBetAmountInput4").val() != 0 || $("#overrideBetAmountInput4").val() != "") {
-        overridesBetAmountInput4 = $("#overrideBetAmountInput4").val();
-        console.log(`Override bet amount 4 set to ${overridesBetAmountInput4}.`);
+        overrideAmount4 = $("#overrideBetAmountInput4").val();
+        console.log(`Override bet amount 4 set to ${overrideAmount4}.`);
     }
     if ($("#overrideBetAmountInput5").val() != 0 || $("#overrideBetAmountInput5").val() != "") {
-        overridesBetAmountInput5 = $("#overrideBetAmountInput5").val();
-        console.log(`Override bet amount 5 set to ${overridesBetAmountInput5}.`);
+        overrideAmount5 = $("#overrideBetAmountInput5").val();
+        console.log(`Override bet amount 5 set to ${overrideAmount5}.`);
     }
 
 }
