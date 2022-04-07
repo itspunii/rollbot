@@ -510,20 +510,31 @@ function test() {
 /*  TODO
 
 Styling {
+    Make this shit ass menu not a pain in the ass to look at.
     Fix Menu button position.
 }
 
 Menu {
-    try to get rainbows.
+
+    Try to get rainbows?
     Add peakBalance stat in menu.
     Add start betting again checkbox when jackpot reaches a defined amount and balance respects minStop/maxStop.
+    Double green bet amount. Sets a custom bet amount for the double green chance.
 
 }
 
+Stats {
+
+    Log total number of bets after Start.
+    Log user level on start.
+    Log gems amount on start.
+    Try to log current gain/loss. Store currentBalance as oldBalance? and compare current and old after a roll?
+
+}
+
+
 Get jackpot amount and maybe get the money added to the jackpot after a roll.
-Log all bet amounts.
-Log user level on start.
-Log gems amount on start.
+
 
 */
 
